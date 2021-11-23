@@ -3,7 +3,7 @@
 
 /* Data structures */
 typedef struct {
-  size_t decimal;
+  unsigned int decimal;
   char description[50];
 } __attribute__((packed)) nf9_fwstatus;
 

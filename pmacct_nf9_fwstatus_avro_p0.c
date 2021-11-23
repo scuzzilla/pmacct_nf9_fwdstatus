@@ -50,7 +50,7 @@ cdada_list_t *nf9_fwstatus_to_linked_list();
 int
 main(void)
 {
-  compose_nf9_fwstatus_avro_schema();
+  //compose_nf9_fwstatus_avro_schema();
 
   //while(1)
   {
@@ -91,7 +91,7 @@ generate_rnd()
 /* nf9_fwstatus to linked-list */
 cdada_list_t *nf9_fwstatus_to_linked_list()
 {
-  const size_t nf9_fwstatus_decimal[23] = {
+  const unsigned int nf9_fwstatus_decimal[23] = {
     64, 65, 66,
     128, 129, 130,
     131, 132, 133,
@@ -128,14 +128,14 @@ cdada_list_t *nf9_fwstatus_to_linked_list()
 	  "CONSUMED For us",
   };
 
-  cdada_list_t *nf9_fwstatus_linked_list = cdada_list_create_custom(fwstate);
+  cdada_list_t *nf9_fwstatus_linked_list = cdada_list_create_custom(nf9_fwstatus);
   nf9_fwstatus fwstate;
 
   size_t idx_0;
   for (idx_0 = 0; idx_0 < 23; idx_0++)
   {
     memset(&fwstate, 0, sizeof(fwstate));
-    strcpy(fwstate.decimal, nf9_fwstatus_decimal[idx_0]);
+    fwstate.decimal = nf9_fwstatus_decimal[idx_0];
     strcpy(fwstate.description, nf9_fwstatus_description[idx_0]);
 
     cdada_list_push_back(nf9_fwstatus_linked_list, &fwstate);

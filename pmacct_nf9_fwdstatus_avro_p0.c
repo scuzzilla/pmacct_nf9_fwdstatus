@@ -2,17 +2,17 @@
  * first prototype - linked-list logic with libcdada (AVRO version)
  *
  * 1. Invoke generator with the types you want to support
- *    ~/Projects/libcdada/tools/cdada-gen list:nf9_fwstatus -o ~/Projects/pmacct_nf9_fwstatus/autogen_cdada_nf9_fwstatus.cc
+ *    ~/Projects/libcdada/tools/cdada-gen list:nf9_fwdstatus -o ~/Projects/pmacct_nf9_fwdstatus/autogen_cdada_nf9_fwdstatus.cc
  *
- * 2. Add header includes for types 'nf9_fwstatus' in the place holder
- *    vim ~/Projects/pmacct_nf9_fwstatus/autogen_cdada_nf9_fwstatus.cc
+ * 2. Add header includes for types 'nf9_fwdstatus' in the place holder
+ *    vim ~/Projects/pmacct_nf9_fwdstatus/autogen_cdada_nf9_fwdstatus.cc
  *
  * 3. Add to your build system
- *    g++ -c ~/Projects/pmacct_nf9_fwstatus/autogen_cdada_nf9_fwstatus.cc
+ *    g++ -c ~/Projects/pmacct_nf9_fwdstatus/autogen_cdada_nf9_fwdstatus.cc
  *
  * 4. Link your application; make sure to link against -lcdada:
- *    cd ~/Projects/pmacct_nf9_fwstatus/
- *    gcc -Wall pmacct_nf9_fwstatus_avro_p0.c autogen_cdada_nf9_fwstatus.o -o bin/pmacct_nf9_fwstatus_avro_p0 -lcdada -lstdc++ -lavro
+ *    cd ~/Projects/pmacct_nf9_fwdstatus/
+ *    gcc -Wall pmacct_nf9_fwdstatus_avro_p0.c autogen_cdada_nf9_fwdstatus.o -o bin/pmacct_nf9_fwdstatus_avro_p0 -lcdada -lstdc++ -lavro
  */
 
 #include <stdio.h>
@@ -22,9 +22,9 @@
 #include <unistd.h>
 #include <avro.h>
 #include <cdada/list.h>
-#include "cdada_types/nf9_fwstatus.h"
+#include "cdada_types/nf9_fwdstatus.h"
 
-CDADA_LIST_CUSTOM_TYPE_DECL(nf9_fwstatus);
+CDADA_LIST_CUSTOM_TYPE_DECL(nf9_fwdstatus);
 
 
 //
@@ -37,20 +37,20 @@ CDADA_LIST_CUSTOM_TYPE_DECL(nf9_fwstatus);
 //
 // --- AVRO prototypes ---
 //
-//void compose_nf9_fwstatus_avro_schema(void);
-//int compose_nf9_fwstatus_avro_data(cdada_list_t *, size_t);
-//int print_nf9_fwstatus_avro_data(cdada_list_t *, size_t);
-//void free_nf9_fwstatus_avro_data_memory(void);
+//void compose_nf9_fwdstatus_avro_schema(void);
+//int compose_nf9_fwdstatus_avro_data(cdada_list_t *, size_t);
+//int print_nf9_fwdstatus_avro_data(cdada_list_t *, size_t);
+//void free_nf9_fwdstatus_avro_data_memory(void);
 
 /* Function prototypes */
 size_t generate_rnd(void);
-cdada_list_t *nf9_fwstatus_to_linked_list();
+cdada_list_t *nf9_fwdstatus_to_linked_list();
 
 
 int
 main(void)
 {
-  compose_nf9_fwstatus_avro_schema();
+  //compose_nf9_fwdstatus_avro_schema();
 
   //while(1)
   {
@@ -58,12 +58,12 @@ main(void)
     //size_t rnd = generate_rnd();
 
     /* linked-list creation */
-    cdada_list_t *ll = nf9_fwstatus_to_linked_list();
+    cdada_list_t *ll = nf9_fwdstatus_to_linked_list();
     int ll_size = cdada_list_size(ll);
 
-    //compose_nf9_fwstatus_avro_data(ll, ll_size);
-    //print_nf9_fwstatus_avro_data(ll, ll_size);
-    //free_nf9_fwstatus_avro_data_memory();
+    //compose_nf9_fwdstatus_avro_data(ll, ll_size);
+    //print_nf9_fwdstatus_avro_data(ll, ll_size);
+    //free_nf9_fwdstatus_avro_data_memory();
 
     cdada_list_destroy(ll);
 
@@ -88,10 +88,10 @@ generate_rnd()
 }
 
 
-/* nf9_fwstatus to linked-list */
-cdada_list_t *nf9_fwstatus_to_linked_list()
+/* nf9_fwdstatus to linked-list */
+cdada_list_t *nf9_fwdstatus_to_linked_list()
 {
-  const size_t nf9_fwstatus_decimal[23] = {
+  const unsigned int nf9_fwdstatus_decimal[23] = {
     64, 65, 66,
     128, 129, 130,
     131, 132, 133,
@@ -102,7 +102,7 @@ cdada_list_t *nf9_fwstatus_to_linked_list()
     194, 195
   };
 
-  const char nf9_fwstatus_description[23][50] = {
+  const char nf9_fwdstatus_description[23][50] = {
     "FWD Unknown",
 	  "FWD Fragmented",
 	  "FWD Not Fragmented",
@@ -128,20 +128,20 @@ cdada_list_t *nf9_fwstatus_to_linked_list()
 	  "CONSUMED For us",
   };
 
-  cdada_list_t *nf9_fwstatus_linked_list = cdada_list_create_custom(fwstate);
-  nf9_fwstatus fwstate;
+  cdada_list_t *nf9_fwdstatus_linked_list = cdada_list_create_custom(nf9_fwdstatus);
+  nf9_fwdstatus fwdstate;
 
   size_t idx_0;
   for (idx_0 = 0; idx_0 < 23; idx_0++)
   {
-    memset(&fwstate, 0, sizeof(fwstate));
-    strcpy(fwstate.decimal, nf9_fwstatus_decimal[idx_0]);
-    strcpy(fwstate.description, nf9_fwstatus_description[idx_0]);
+    memset(&fwdstate, 0, sizeof(fwdstate));
+    fwdstate.decimal = nf9_fwdstatus_decimal[idx_0];
+    strcpy(fwdstate.description, nf9_fwdstatus_description[idx_0]);
 
-    cdada_list_push_back(nf9_fwstatus_linked_list, &fwstate);
+    cdada_list_push_back(nf9_fwdstatus_linked_list, &fwdstate);
   }
 
-  return nf9_fwstatus_linked_list;
+  return nf9_fwdstatus_linked_list;
 }
 
 

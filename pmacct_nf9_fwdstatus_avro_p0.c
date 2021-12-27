@@ -30,52 +30,49 @@ CDADA_LIST_CUSTOM_TYPE_DECL(nf9_fwdstatus);
 //
 // --- AVRO global variables ---
 //
-//avro_schema_t sc_type_record, sc_type_array, sc_type_string;
-//avro_value_t v_type_string, v_type_array, v_type_record;
-//avro_value_iface_t *if_type_record, *if_type_array, *if_type_string;
+avro_schema_t sc_type_record, sc_type_string;
+avro_value_t v_type_string, v_type_record;
+avro_value_iface_t *if_type_record, *if_type_string;
 
 //
 // --- AVRO prototypes ---
 //
-//void compose_nf9_fwdstatus_avro_schema(void);
-//int compose_nf9_fwdstatus_avro_data(cdada_list_t *, size_t);
-//int print_nf9_fwdstatus_avro_data(cdada_list_t *, size_t);
-//void free_nf9_fwdstatus_avro_data_memory(void);
+void compose_nf9_fwdstatus_avro_schema(void);
+int compose_nf9_fwdstatus_avro_data(size_t, cdada_list_t *, size_t);
+int print_nf9_fwdstatus_avro_data();
+void free_nf9_fwdstatus_avro_data_memory(void);
 
 /* Function prototypes */
 size_t generate_rnd(void);
 cdada_list_t *nf9_fwdstatus_to_linked_list();
 
 
-int
-main(void)
+int main(void)
 {
-  //compose_nf9_fwdstatus_avro_schema();
+  compose_nf9_fwdstatus_avro_schema();
 
-  //while(1)
-  {
+  while(1) {
     /* rnd unsigned int (0 - 256) generation */
-    //size_t rnd = generate_rnd();
+    size_t rnd = generate_rnd();
 
     /* linked-list creation */
     cdada_list_t *ll = nf9_fwdstatus_to_linked_list();
     int ll_size = cdada_list_size(ll);
 
-    //compose_nf9_fwdstatus_avro_data(ll, ll_size);
-    //print_nf9_fwdstatus_avro_data(ll, ll_size);
-    //free_nf9_fwdstatus_avro_data_memory();
+    compose_nf9_fwdstatus_avro_data(rnd, ll, ll_size);
+    print_nf9_fwdstatus_avro_data(ll_size);
+    free_nf9_fwdstatus_avro_data_memory();
 
     cdada_list_destroy(ll);
 
-    //sleep(1);
+    sleep(1);
   }
 
   return (0);
 }
 
 
-size_t
-generate_rnd()
+size_t generate_rnd()
 {
   size_t rnd;
 
@@ -132,8 +129,7 @@ cdada_list_t *nf9_fwdstatus_to_linked_list()
   nf9_fwdstatus fwdstate;
 
   size_t idx_0;
-  for (idx_0 = 0; idx_0 < 23; idx_0++)
-  {
+  for (idx_0 = 0; idx_0 < 23; idx_0++) {
     memset(&fwdstate, 0, sizeof(fwdstate));
     fwdstate.decimal = nf9_fwdstatus_decimal[idx_0];
     strcpy(fwdstate.description, nf9_fwdstatus_description[idx_0]);
@@ -145,17 +141,14 @@ cdada_list_t *nf9_fwdstatus_to_linked_list()
 }
 
 
-/*
 //
 // --- AVRO functions ---
 //
-void
-compose_tcpflags_avro_schema(void)
+void compose_nf9_fwdstatus_avro_schema(void)
 {
   sc_type_string = avro_schema_string();
-  sc_type_array = avro_schema_array(sc_type_string);
   sc_type_record = avro_schema_record("acct_data", NULL);
-  avro_schema_record_field_append(sc_type_record, "tcp_flags", sc_type_array);
+  avro_schema_record_field_append(sc_type_record, "forwarding_status", sc_type_string);
 
   FILE *avro_schema_fp = NULL;
   avro_writer_t avro_schema_writer = NULL;
@@ -166,25 +159,23 @@ compose_tcpflags_avro_schema(void)
 }
 
 
-int
-compose_tcpflags_avro_data(cdada_list_t *ll, size_t ll_size)
+int compose_nf9_fwdstatus_avro_data(size_t fwdstatus_rnd, cdada_list_t *ll, size_t ll_size)
 {
-  tcpflag tcpstate;
+  nf9_fwdstatus fwdstate;
 
+  /*
   printf("\nstart -> linked-list:\n");
   size_t idx_0;
-  for (idx_0 = 0; idx_0 < ll_size; idx_0++)
-  {
-    cdada_list_get(ll, idx_0, &tcpstate);
-    printf("tcpflag: %s\n", tcpstate.flag);
+  for (idx_0 = 0; idx_0 < ll_size; idx_0++) {
+    cdada_list_get(ll, idx_0, &fwdstate);
+    printf("fwdstate: %s\n", fwdstate.description);
   }
+  */
 
   if_type_record = avro_generic_class_from_schema(sc_type_record);
-  if_type_array = avro_generic_class_from_schema(sc_type_array);
   if_type_string = avro_generic_class_from_schema(sc_type_string);
 
   avro_generic_value_new(if_type_record, &v_type_record);
-  avro_generic_value_new(if_type_array, &v_type_array);
   avro_generic_value_new(if_type_string, &v_type_string);
 
   avro_file_writer_t db_w;
@@ -192,28 +183,20 @@ compose_tcpflags_avro_data(cdada_list_t *ll, size_t ll_size)
 
   remove(dbname);
   int rval_w = avro_file_writer_create(dbname, sc_type_record, &db_w);
-  if (rval_w)
-  {
+  if (rval_w) {
     fprintf(stderr, "Error: %s\n", avro_strerror());
     return -1;
   }
 
-  size_t array_size;
-  avro_value_get_size(&v_type_array, &array_size);
-  printf("before: %lu\n", array_size);
-
   size_t idx_1;
-  for (idx_1 = 0; idx_1 < ll_size; idx_1++)
-  {
-    cdada_list_get(ll, idx_1, &tcpstate);
-    if (avro_value_get_by_name(&v_type_record, "tcp_flags", &v_type_array, NULL) == 0)
-    {
-      if (avro_value_append(&v_type_array, &v_type_string, NULL) == 0)
-      {
-        if (strcmp(tcpstate.flag, "NULL") != 0)
-        {
-          avro_value_set_string(&v_type_string, tcpstate.flag);
-        }
+  for (idx_1 = 0; idx_1 < ll_size; idx_1++) {
+    cdada_list_get(ll, idx_1, &fwdstate);
+    if (avro_value_get_by_name(&v_type_record, "forwarding_status", &v_type_string, NULL) == 0) {
+      if (fwdstate.decimal == fwdstatus_rnd) {
+        avro_value_set_string(&v_type_string, fwdstate.description);
+      }
+      else {
+        avro_value_set_string(&v_type_string, "unrecognized");
       }
     }
   }
@@ -222,21 +205,16 @@ compose_tcpflags_avro_data(cdada_list_t *ll, size_t ll_size)
   avro_file_writer_flush(db_w);
   avro_file_writer_close(db_w);
 
-  avro_value_get_size(&v_type_array, &array_size);
-  printf("after: %lu\n", array_size);
-
   return 0;
 }
 
 
-int
-print_tcpflags_avro_data(cdada_list_t *ll, size_t ll_size)
+int print_nf9_fwdstatus_avro_data()
 {
   const char *dbname = "avro_record.db";
   avro_file_reader_t db_r;
   int rval_r = avro_file_reader(dbname, &db_r);
-  if (rval_r)
-  {
+  if (rval_r) {
     fprintf(stderr, "Error: %s\n", avro_strerror());
     return -1;
   }
@@ -245,23 +223,11 @@ print_tcpflags_avro_data(cdada_list_t *ll, size_t ll_size)
   size_t value_size;
   const char *p = NULL;
 
-  size_t array_size;
-  avro_value_get_size(&v_type_array, &array_size);
-  printf("\nprint_array_size: %lu\n", array_size);
-
-  size_t idx_0;
-  for (idx_0 = 0; idx_0 < ll_size; idx_0++)
-  {
-    if (avro_value_get_by_name(&v_type_record, "tcp_flags", &v_type_array, NULL) == 0)
-    {
-      if (avro_value_get_by_index(&v_type_array, idx_0, &v_type_string, NULL) == 0)
-      {
-        avro_value_get_string(&v_type_string, &p, &value_size);
-      }
-    }
-    //fprintf(stdout, "%lu\n", value_size);
-    fprintf(stdout, "%s ", p);
+  if (avro_value_get_by_name(&v_type_record, "forwarding_status", &v_type_string, NULL) == 0) {
+    avro_value_get_string(&v_type_string, &p, &value_size);
   }
+  //fprintf(stdout, "%lu\n", value_size);
+  fprintf(stdout, "%s ", p);
   printf("\n");
 
   avro_file_reader_close(db_r);
@@ -270,17 +236,12 @@ print_tcpflags_avro_data(cdada_list_t *ll, size_t ll_size)
 }
 
 
-void
-free_tcpflags_avro_data_memory(void)
+void free_nf9_fwdstatus_avro_data_memory(void)
 {
   avro_value_iface_decref(if_type_record); //no need to decref the associated value
-  avro_value_iface_decref(if_type_array); //no need to decref the associated value
   avro_value_iface_decref(if_type_string); //no need to decref the associated value
   avro_schema_decref(sc_type_record);
-  avro_schema_decref(sc_type_array);
   avro_schema_decref(sc_type_string);
   //avro_value_decref(&v_type_record);
-  //avro_value_decref(&v_type_array);
   //avro_value_decref(&v_type_string);
 }
-*/

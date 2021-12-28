@@ -88,8 +88,8 @@ size_t generate_rnd()
 /* nf9_fwdstatus to linked-list */
 cdada_list_t *nf9_fwdstatus_to_linked_list()
 {
-  const unsigned int nf9_fwdstatus_decimal[23] = {
-    64, 65, 66,
+  const unsigned int nf9_fwdstatus_decimal[24] = {
+    0, 64, 65, 66,
     128, 129, 130,
     131, 132, 133,
     134, 135, 136,
@@ -99,7 +99,8 @@ cdada_list_t *nf9_fwdstatus_to_linked_list()
     194, 195
   };
 
-  const char nf9_fwdstatus_description[23][50] = {
+  const char nf9_fwdstatus_description[24][50] = {
+    "Unknown",
     "FWD Unknown",
 	  "FWD Fragmented",
 	  "FWD Not Fragmented",
@@ -129,7 +130,7 @@ cdada_list_t *nf9_fwdstatus_to_linked_list()
   nf9_fwdstatus fwdstate;
 
   size_t idx_0;
-  for (idx_0 = 0; idx_0 < 23; idx_0++) {
+  for (idx_0 = 0; idx_0 < 24; idx_0++) {
     memset(&fwdstate, 0, sizeof(fwdstate));
     fwdstate.decimal = nf9_fwdstatus_decimal[idx_0];
     strcpy(fwdstate.description, nf9_fwdstatus_description[idx_0]);

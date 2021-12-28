@@ -12,7 +12,7 @@
  *
  * 4. Link your application; make sure to link against -lcdada:
  *    cd ~/Projects/pmacct_nf9_fwdstatus/
- *    gcc -Wall pmacct_nf9_fwdstatus_json_p4.c autogen_cdada_nf9_fwdstatus.o -o bin/pmacct_nf9_fwdstatus_json_p4 -lcdada -lstdc++ -ljansson
+ *    gcc -Wall pmacct_nf9_fwdstatus_json_p0.c autogen_cdada_nf9_fwdstatus.o -o bin/pmacct_nf9_fwdstatus_json_p0 -lcdada -lstdc++ -ljansson
  */
 
 #include <stdio.h>
@@ -82,8 +82,8 @@ size_t generate_rnd()
 /* nf9_fwdstatus to linked-list */
 cdada_list_t *nf9_fwdstatus_to_linked_list()
 {
-  const unsigned int nf9_fwdstatus_decimal[23] = {
-    64, 65, 66,
+  const unsigned int nf9_fwdstatus_decimal[24] = {
+    0, 64, 65, 66,
     128, 129, 130,
     131, 132, 133,
     134, 135, 136,
@@ -93,7 +93,8 @@ cdada_list_t *nf9_fwdstatus_to_linked_list()
     194, 195
   };
 
-  const char nf9_fwdstatus_description[23][50] = {
+  const char nf9_fwdstatus_description[24][50] = {
+    "Unknown",
     "FWD Unknown",
     "FWD Fragmented",
     "FWD Not Fragmented",
@@ -123,7 +124,7 @@ cdada_list_t *nf9_fwdstatus_to_linked_list()
   nf9_fwdstatus fwdstate;
 
   size_t idx_0;
-  for (idx_0 = 0; idx_0 < 23; idx_0++) {
+  for (idx_0 = 0; idx_0 < 24; idx_0++) {
     memset(&fwdstate, 0, sizeof(fwdstate));
     fwdstate.decimal = nf9_fwdstatus_decimal[idx_0];
     strcpy(fwdstate.description, nf9_fwdstatus_description[idx_0]);
@@ -150,7 +151,7 @@ json_t *compose_nf9_fwdstatus_json_data(size_t fwdstatus_rnd, cdada_list_t *ll, 
   }
   printf("\n\n---\n");
 
-  json_t *root = json_string();
+  json_t *root = json_string(NULL);
 
   int idx_1;
   for (idx_1 = 0; idx_1 < ll_size; idx_1++) {

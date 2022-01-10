@@ -35,28 +35,28 @@ nf9_fwdstatus_encode_as_string: true
 
   const char nf9_fwdstatus_description[23][50] = {
     "FORWARDED Unknown",
-	"FORWARDED Fragmented",
-	"FORWARDED Not Fragmented",
-	"DROPPED Unknown",
-	"DROPPED ACL deny",
-	"DROPPED ACL drop",
-	"DROPPED Unroutable",
-	"DROPPED Adjacency",
-	"DROPPED Fragmentation and DF set",
-	"DROPPED Bad header checksum",
-	"DROPPED Bad total Length",
-	"DROPPED Bad header length",
-	"DROPPED bad TTL",
-	"DROPPED Policer",
-	"DROPPED WRED",
-	"DROPPED RPF",
-	"DROPPED For us",
-	"DROPPED Bad output interface",
-	"DROPPED Hardware",
-	"CONSUMED Unknown",
-	"CONSUMED Punt Adjacency",
-	"CONSUMED Incomplete Adjacency",
-	"CONSUMED For us",
+    "FORWARDED Fragmented",
+    "FORWARDED Not Fragmented",
+    "DROPPED Unknown",
+    "DROPPED ACL deny",
+    "DROPPED ACL drop",
+    "DROPPED Unroutable",
+    "DROPPED Adjacency",
+    "DROPPED Fragmentation and DF set",
+    "DROPPED Bad header checksum",
+    "DROPPED Bad total Length",
+    "DROPPED Bad header length",
+    "DROPPED bad TTL",
+    "DROPPED Policer",
+    "DROPPED WRED",
+    "DROPPED RPF",
+    "DROPPED For us",
+    "DROPPED Bad output interface",
+    "DROPPED Hardware",
+    "CONSUMED Unknown",
+    "CONSUMED Punt Adjacency",
+    "CONSUMED Incomplete Adjacency",
+    "CONSUMED For us",
   };
 
 ```
@@ -65,7 +65,7 @@ nf9_fwdstatus_encode_as_string: true
 - Current
 ```JSON
 {                                                                                                                                                              
-  "forwarding_status": "decimal_value",                                                                                                                                               
+  "forwarding_status": "decimal_value_string",                                                                                                                                               
   "other1": "other1",
   "other2": "other2",
   "other3": "other3"
@@ -118,4 +118,3 @@ nf9_fwdstatus_encode_as_string: true
   ]
 }
 ```
-

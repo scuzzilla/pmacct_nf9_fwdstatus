@@ -1,7 +1,7 @@
 ### Summary
 
 The current implementation of PMACCT is encoding the "IPFIX forwardingStatus" field into decimal format.
-It's the job of an external entity to map it into the human-readable format like described by [RFC-7270 Section 4.12](https://www.rfc-editor.org/rfc/rfc7270.html#section-4.12).
+It's the job of an external entity to map it into the human-readable format like described by [RFC-7270 Section 4.12](https://www.rfc-editor.org/rfc/rfc7270.html#section-4.12). 
 At the moment the "IPFIX forwardingStatus" is handled by defining an ah-hoc [custom-defined primitive](https://github.com/pmacct/pmacct/blob/master/examples/primitives.lst.example).
 
 The main goals of the new implementation are:
